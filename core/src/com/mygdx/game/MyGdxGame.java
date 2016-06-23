@@ -13,15 +13,21 @@ public class MyGdxGame extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
+		img = new Texture("Wall.png");
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+		Gdx.gl.glClearColor(1, 1, 1, 0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
-		batch.draw(img, 0, 0);
+		for (int i=0; i<20; i++) {
+			for (int y=0; y<20; y++) {
+
+				batch.draw(img, i * 33, y * 33, 33, 33);
+			}
+		}
+
 		batch.end();
 	}
 }
