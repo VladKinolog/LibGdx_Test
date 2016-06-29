@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class MyGdxGame extends ApplicationAdapter {
     Rectangle ball;
     Rectangle wall;
+    Rectangle mazeOut;
 	OrthographicCamera camera;
 	SpriteBatch batch;
 	Texture wallImg;
@@ -21,6 +22,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	int mazeHeight = 28;
     int xBall = 16;
     int yBall = 16;
+    boolean accessDraw = false;
 
 	
 	@Override
@@ -52,24 +54,37 @@ public class MyGdxGame extends ApplicationAdapter {
 				batch.draw(wallImg, i * 16, y * 16);
 			}
 		}
+        if (accessDraw){
+            batch.draw(wallImg,xBall,yBall);
+        }
         batch.draw(ballImg,xBall,yBall);
 		batch.end();
 
 //          Обработка нажатия клавиш и столкновение
+
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
-            if (maze.getMazeArray()[(xBall - 16)/16][yBall/16]== Maze.WALL){return;}
+            if (maze.getMazeArray()[(xBall - 16)/16][yBall/16]== Maze.WALL){
+                accessDraw = true;
+                return;}
             xBall -= 16;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
-            if (maze.getMazeArray()[(xBall + 16)/16][yBall/16]== Maze.WALL){return;}
+            if (maze.getMazeArray()[(xBall + 16)/16][yBall/16]== Maze.WALL){
+                accessDraw = true;
+                return;}
             xBall += 16;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            if (maze.getMazeArray()[xBall/16][(yBall+16)/16]== Maze.WALL){return;}
+            if (maze.getMazeArray()[xBall/16][(yBall+16)/16]== Maze.WALL){
+                accessDraw = true;
+                return;}
             yBall += 16;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
-            if (maze.getMazeArray()[xBall/16][(yBall-16)/16]== Maze.WALL){return;}
+            if (maze.getMazeArray()[xBall/16][(yBall-16)/16]== Maze.WALL){
+                accessDraw = true;
+                return;}
             yBall -= 16;
         }
 //        Проверка выхода за пределы экрана
