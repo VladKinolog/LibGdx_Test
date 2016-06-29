@@ -28,7 +28,7 @@ public class StartMenuScreen implements Screen{
         camera.update();
 
         mazeGame.batch.begin();
-        mazeGame.font.draw(mazeGame.batch, "Welcome to Drop!!! ", 100, 150);
+        mazeGame.font.draw(mazeGame.batch, "Добро пожаловать!!! ", 100, 150);
         mazeGame.font.draw(mazeGame.batch, "Tap anywhere to begin!", 100, 100);
 
         mazeGame.batch.end();

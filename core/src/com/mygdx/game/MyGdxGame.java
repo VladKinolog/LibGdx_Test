@@ -1,15 +1,20 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.SynchronousAssetLoader;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
-public class MyGdxGame extends ApplicationAdapter {
+class MazeGameScreen implements Screen {
+
+    final MazeGame mazeGame;
+
     Rectangle ball;
     Rectangle wall;
     Rectangle mazeOut;
@@ -18,40 +23,52 @@ public class MyGdxGame extends ApplicationAdapter {
 	Texture wallImg;
     Texture ballImg;
 	Maze maze;
-	int mazeWidth = 28;
-	int mazeHeight = 28;
+	int mazeWidth = 20;
+	int mazeHeight = 10;
     int xBall = 16;
     int yBall = 16;
     boolean accessDraw = false;
+    long deltaTime = 1000;
+    long currentTime = System.currentTimeMillis();
+    long futureTime;
 
-	
-	@Override
-	public void create () {
-		camera = new OrthographicCamera();
-		camera.setToOrtho(false,800,480);
-		batch = new SpriteBatch();
-		wallImg = new Texture("Wall.png");
+
+    public MazeGameScreen (final MazeGame game){
+        this.mazeGame = game;
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false,800,480);
+        batch = new SpriteBatch();
+        wallImg = new Texture("Wall.png");
         ballImg = new Texture("ball.png");
-		maze = new Maze(mazeWidth, mazeHeight);
-		maze.generatorMaze();
+        maze = new Maze(mazeWidth, mazeHeight);
+        maze.generatorMaze();
         wall = new Rectangle();
         wall.x = 0;
         wall.y = 0;
 
+    }
 
-	}
 
 	@Override
-	public void render () {
+	public void render (float delta) {
 		Gdx.gl.glClearColor(1, 1, 1, 0f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+
+        futureTime = System.currentTimeMillis();
+
+
 		for (int i=0; i< maze.getMazeArray().length; i++) {
-			for (int y=0; y< maze.getMazeArray().length; y++) {
-				if (maze.getMazeArray()[i][y] == Maze.WALL)
-				batch.draw(wallImg, i * 16, y * 16);
+			for (int y=0; y< maze.getMazeArray()[i].length; y++) {
+
+                if (maze.getMazeArray()[i][y] == Maze.WALL) {
+
+                    batch.draw(wallImg, i * 16, y * 16);
+                }
+
 			}
 		}
         if (accessDraw){
@@ -59,6 +76,8 @@ public class MyGdxGame extends ApplicationAdapter {
         }
         batch.draw(ballImg,xBall,yBall);
 		batch.end();
+
+
 
 //          Обработка нажатия клавиш и столкновение
 
@@ -92,11 +111,39 @@ public class MyGdxGame extends ApplicationAdapter {
         if(xBall > maze.getMazeArray().length * 16 - 32) xBall = maze.getMazeArray().length * 16 - 32;
         if(yBall < 16) yBall = 16;
         if(yBall > maze.getMazeArray().length * 16 - 32) yBall = maze.getMazeArray().length * 16 - 32;
+
+        futureTime = System.currentTimeMillis() - futureTime;
+        System.out.println(futureTime);
 	}
 
     @Override
     public void dispose() {
         wallImg.dispose();
         ballImg.dispose();
+    }
+
+    @Override
+    public void hide() {
+
+    }
+
+    @Override
+    public void pause() {
+
+    }
+
+    @Override
+    public void resize(int width, int height) {
+
+    }
+
+    @Override
+    public void resume() {
+
+    }
+
+    @Override
+    public void show() {
+
     }
 }

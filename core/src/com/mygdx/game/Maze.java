@@ -61,10 +61,10 @@ public class Maze {
                 this.labyrinthWeigh = length;
             }
             if (height % 2 == 0){
-                this.labyrinthHeight = length + 1;
+                this.labyrinthHeight = height + 1;
             }
             else {
-                this.labyrinthHeight = length;
+                this.labyrinthHeight = height;
             }
             labyrinthField = this.fieldGenerator();
         }

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  */
 public class MazeGame extends Game {
 
+
     SpriteBatch batch;
     BitmapFont font;
 
@@ -16,7 +17,7 @@ public class MazeGame extends Game {
     public void create() {
         batch = new SpriteBatch();
         font = new BitmapFont();
-        this.getScreen(new StartMenuScreen(this));
+        this.setScreen(new StartMenuScreen(this));
     }
 
     @Override
