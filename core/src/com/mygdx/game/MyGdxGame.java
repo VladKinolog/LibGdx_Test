@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Rectangle;
 
 class MazeGameScreen implements Screen {
 
+
     final MazeGame mazeGame;
 
     Rectangle ball;
@@ -23,11 +24,13 @@ class MazeGameScreen implements Screen {
 	Texture wallImg;
     Texture ballImg;
 	Maze maze;
-	int mazeWidth = 20;
-	int mazeHeight = 10;
+	int mazeWidth = 48;
+	int mazeHeight = 28;
     int xBall = 16;
     int yBall = 16;
     boolean accessDraw = false;
+
+    // Временные переменные
     long deltaTime = 1000;
     long currentTime = System.currentTimeMillis();
     long futureTime;
@@ -64,16 +67,15 @@ class MazeGameScreen implements Screen {
 		for (int i=0; i< maze.getMazeArray().length; i++) {
 			for (int y=0; y< maze.getMazeArray()[i].length; y++) {
 
-                if (maze.getMazeArray()[i][y] == Maze.WALL) {
+                if (maze.getMazeArray()[i][y] == Maze.VISIT_WALL) {
 
                     batch.draw(wallImg, i * 16, y * 16);
                 }
-
 			}
 		}
-        if (accessDraw){
-            batch.draw(wallImg,xBall,yBall);
-        }
+//        if (accessDraw){
+//            batch.draw(wallImg,xBall,yBall);
+//        }
         batch.draw(ballImg,xBall,yBall);
 		batch.end();
 
@@ -83,26 +85,34 @@ class MazeGameScreen implements Screen {
 
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.LEFT)){
-            if (maze.getMazeArray()[(xBall - 16)/16][yBall/16]== Maze.WALL){
-                accessDraw = true;
+
+            // Проверка условия является ли ячейка стеной или посещенной стеной.
+            // Если да то стоим на месте и меняем значение стены на посещенную,
+            // если нет перемещаемя в данную точку.
+            if (maze.getMazeArray()[(xBall - 16)/16][yBall/16]== Maze.WALL ||
+                    maze.getMazeArray()[(xBall - 16)/16][yBall/16]== Maze.VISIT_WALL){
+                maze.getMazeArray()[(xBall - 16)/16][yBall/16]= Maze.VISIT_WALL;
                 return;}
             xBall -= 16;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.RIGHT)){
-            if (maze.getMazeArray()[(xBall + 16)/16][yBall/16]== Maze.WALL){
-                accessDraw = true;
+            if (maze.getMazeArray()[(xBall + 16)/16][yBall/16]== Maze.WALL ||
+                    maze.getMazeArray()[(xBall + 16)/16][yBall/16]== Maze.VISIT_WALL){
+                maze.getMazeArray()[(xBall + 16)/16][yBall/16]= Maze.VISIT_WALL;
                 return;}
             xBall += 16;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP)){
-            if (maze.getMazeArray()[xBall/16][(yBall+16)/16]== Maze.WALL){
-                accessDraw = true;
-                return;}
+            if (maze.getMazeArray()[xBall/16][(yBall+16)/16]== Maze.WALL ||
+                    maze.getMazeArray()[xBall/16][(yBall+16)/16] == Maze.VISIT_WALL){
+                maze.getMazeArray()[xBall/16][(yBall+16)/16] = Maze.VISIT_WALL;
+            return;}
             yBall += 16;
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.DOWN)){
-            if (maze.getMazeArray()[xBall/16][(yBall-16)/16]== Maze.WALL){
-                accessDraw = true;
+            if (maze.getMazeArray()[xBall/16][(yBall-16)/16]== Maze.WALL ||
+                    maze.getMazeArray()[xBall/16][(yBall-16)/16] == Maze.VISIT_WALL){
+                maze.getMazeArray()[xBall/16][(yBall-16)/16]= Maze.VISIT_WALL;
                 return;}
             yBall -= 16;
         }

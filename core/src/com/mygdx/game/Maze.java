@@ -16,6 +16,7 @@ public class Maze {
         public static final int CELL = 0;
         public static final int WALL = 1;
         public static final int VISIT = 2;
+        public static final int VISIT_WALL = 3;
         long counter = 0;
         private int labyrinthWeigh;
         private int labyrinthHeight;
